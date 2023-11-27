@@ -65,7 +65,7 @@ if (data[args.os] === undefined) {
 const date = Math.floor(Date.now() / 1000);
 const info = {
   version: args.version,
-  commit: args.commit
+  commit: args.commit,
   link: args.link,
   date
 };
