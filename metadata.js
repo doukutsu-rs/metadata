@@ -8,7 +8,10 @@ const args = {
     value: undefined
   },
   version: undefined,
-  commit: undefined,
+  commit: {
+    required: false,
+    value: undefined
+  },
   link: undefined,
   minOsVersion: {
     required: false,
@@ -35,11 +38,14 @@ process.argv.forEach((arg) => {
 })
 
 Object.keys(args).forEach((arg) => {
-  if (args[arg] === undefined) {
+  const required = (args[arg].required === true);
+  const defined = (args[arg].value !== undefined);
+  if (args[arg] === undefined || required && !defined) {
     console.error(`Required argument '${arg}' is missing`);
     process.exit(1);
   }
 })
+
 
 let data = {};
 try {
@@ -62,21 +68,27 @@ if (data[args.os] === undefined) {
   data[args.os] = {};
 }
 
+
 const date = Math.floor(Date.now() / 1000);
-const info = {
+let info = {
   version: args.version,
-  commit: args.commit,
   link: args.link,
   date
 };
+
+if (args.minOsVersion.value !== undefined) {
+  info.minOsVersion = args.minOsVersion.value;
+}
+
+if (args.commit.value !== undefined) {
+  info.commit = args.commit.value;
+}
+
+
 if (args.arch.value !== undefined) {
   data[args.os][args.arch.value] = info;
 } else {
   data[args.os] = info;
-}
-
-if (args.minOsVersion.value !== undefined) {
-  data[args.os][args.arch].minOsVersion = args.minOsVersion.value;
 }
 
 try {
