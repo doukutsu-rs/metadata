@@ -8,6 +8,7 @@ const args = {
     value: undefined
   },
   version: undefined,
+  commit: undefined,
   link: undefined,
   minOsVersion: {
     required: false,
@@ -64,6 +65,7 @@ if (data[args.os] === undefined) {
 const date = Math.floor(Date.now() / 1000);
 const info = {
   version: args.version,
+  commit: args.commit
   link: args.link,
   date
 };
